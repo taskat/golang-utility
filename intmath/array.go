@@ -97,9 +97,12 @@ func Product(arr []int) int {
 
 //Removes all instances of n from arr
 func RemoveAll(arr []int, n int) []int {
+	newArr := make([]int, len(arr))
+	copy(newArr, arr)
+	arr = newArr
 	for i := 0; i < len(arr); i++ {
 		if arr[i] == n {
-			arr = append(arr[:i], arr[i + 1:]...)
+			arr = append(arr[:i], arr[i+1:]...)
 		}
 	}
 	return arr
@@ -107,9 +110,12 @@ func RemoveAll(arr []int, n int) []int {
 
 //Removes the first instance of n from arr
 func RemoveFirst(arr []int, n int) []int {
+	newArr := make([]int, len(arr))
+	copy(newArr, arr)
+	arr = newArr
 	for i := 0; i < len(arr); i++ {
 		if arr[i] == n {
-			return append(arr[:i], arr[i + 1:]...)
+			return append(arr[:i], arr[i+1:]...)
 		}
 	}
 	return arr

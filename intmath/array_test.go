@@ -296,7 +296,7 @@ func TestRemoveAll(t *testing.T) {
 			name:        "ArrIsNil",
 			inputArr:    nil,
 			inputN:      1,
-			expectedArr: nil,
+			expectedArr: []int{},
 		},
 	}
 	for _, tC := range testCases {
@@ -324,7 +324,7 @@ func TestRemoveFirst(t *testing.T) {
 			name:        "ArrIsNil",
 			inputArr:    nil,
 			inputN:      1,
-			expectedArr: nil,
+			expectedArr: []int{},
 		},
 	}
 	for _, tC := range testCases {
