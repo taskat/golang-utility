@@ -1,4 +1,4 @@
-module taskat/utility
+module taskat/golang-utility
 
 go 1.16
 
