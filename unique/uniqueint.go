@@ -34,17 +34,17 @@ func (u UniqueIntArray) Get(index int) int {
 }
 
 //Returns true if number is inserted into array, false if it already contained
-func (u UniqueIntArray) Push(number int) bool {
+func (u *UniqueIntArray) Push(number int) bool {
 	return u.UniqueArray.Push(myInt(number))
 }
 
 //Returns true if number is removed, false if it is not contained
-func (u UniqueIntArray) Remove(number int) bool {
+func (u *UniqueIntArray) Remove(number int) bool {
 	return u.UniqueArray.Remove(myInt(number))
 }
 
 //Returns true if the i-th element of array is set succesfully to num, 
 //false if it cannot be set
-func (u UniqueIntArray) Set(number, index int) bool {
+func (u *UniqueIntArray) Set(number, index int) bool {
 	return u.UniqueArray.Set(myInt(number), index)
 }

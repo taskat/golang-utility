@@ -283,18 +283,21 @@ func TestRemoveAll(t *testing.T) {
 	testCases := []struct {
 		name        string
 		inputArr    []int
+		originalArr []int
 		inputN      int
 		expectedArr []int
 	}{
 		{
 			name:        "Simple",
 			inputArr:    []int{1, 2, 3, 2},
+			originalArr: []int{1, 2, 3, 2},
 			inputN:      2,
 			expectedArr: []int{1, 3},
 		},
 		{
 			name:        "ArrIsNil",
 			inputArr:    nil,
+			originalArr: nil,
 			inputN:      1,
 			expectedArr: []int{},
 		},
@@ -303,6 +306,7 @@ func TestRemoveAll(t *testing.T) {
 		t.Run(tC.name, func(t *testing.T) {
 			result := RemoveAll(tC.inputArr, tC.inputN)
 			assert.Equal(t, tC.expectedArr, result)
+			assert.Equal(t, tC.originalArr, tC.inputArr)
 		})
 	}
 }
@@ -311,18 +315,21 @@ func TestRemoveFirst(t *testing.T) {
 	testCases := []struct {
 		name        string
 		inputArr    []int
+		originalarr []int
 		inputN      int
 		expectedArr []int
 	}{
 		{
 			name:        "Simple",
 			inputArr:    []int{1, 2, 3, 2},
+			originalarr: []int{1, 2, 3, 2},
 			inputN:      2,
 			expectedArr: []int{1, 3, 2},
 		},
 		{
 			name:        "ArrIsNil",
 			inputArr:    nil,
+			originalarr: nil,
 			inputN:      1,
 			expectedArr: []int{},
 		},
@@ -331,6 +338,7 @@ func TestRemoveFirst(t *testing.T) {
 		t.Run(tC.name, func(t *testing.T) {
 			result := RemoveFirst(tC.inputArr, tC.inputN)
 			assert.Equal(t, tC.expectedArr, result)
+			assert.Equal(t, tC.originalarr, tC.inputArr)
 		})
 	}
 }
