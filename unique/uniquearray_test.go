@@ -105,6 +105,37 @@ func TestGet(t *testing.T) {
 	}
 }
 
+func TestGetIndex(t *testing.T) {
+	testCases := []struct {
+		name   string
+		item  Item
+		expectedIndex int
+	}{
+		{
+			name:   "0",
+			item:  testItem{1},
+			expectedIndex: 0,
+		},
+		{
+			name:   "1",
+			item:  testItem{2},
+			expectedIndex: 1,
+		},
+		{
+			name:   "-1",
+			item:  testItem{4},
+			expectedIndex: -1,
+		},
+	}
+	arr := Create([]Item{testItem{1}, testItem{2}, testItem{3}})
+	for _, tC := range testCases {
+		t.Run(tC.name, func(t *testing.T) {
+			result := arr.GetIndex(tC.item)
+			assert.Equal(t, tC.expectedIndex, result)
+		})
+	}
+}
+
 func TestLen(t *testing.T) {
 	testCases := []struct {
 		name        string

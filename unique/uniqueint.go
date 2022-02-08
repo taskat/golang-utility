@@ -33,6 +33,11 @@ func (u UniqueIntArray) Get(index int) int {
 	return int(u.UniqueArray.Get(index).(myInt))
 }
 
+//Returns the index of num. If num is not contained it return -1
+func (u UniqueIntArray) GetIndex(num int) int {
+	return u.UniqueArray.GetIndex(myInt(num))
+}
+
 //Returns true if number is inserted into array, false if it already contained
 func (u *UniqueIntArray) Push(number int) bool {
 	return u.UniqueArray.Push(myInt(number))

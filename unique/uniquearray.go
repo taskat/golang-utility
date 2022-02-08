@@ -34,6 +34,16 @@ func (u UniqueArray) Get(index int) Item {
 	return u.data[index]
 }
 
+//Returns the index of item. If the item is not contained, it returns -1
+func (u UniqueArray) GetIndex(item Item) int {
+	for i, elem := range u.data {
+		if elem.Equals(item) {
+			return i
+		}
+	}
+	return -1
+}
+
 //Returns the length of the array
 func (u UniqueArray) Len() int {
 	return len(u.data)
