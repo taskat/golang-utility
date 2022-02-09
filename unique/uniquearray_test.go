@@ -105,25 +105,51 @@ func TestGet(t *testing.T) {
 	}
 }
 
-func TestGetIndex(t *testing.T) {
+func TestGetData(t *testing.T) {
 	testCases := []struct {
 		name   string
-		item  Item
+		arr    []Item
+		result []Item
+	}{
+		{
+			name:   "Simple",
+			arr: []Item{testItem{1}, testItem{2}, testItem{3}},
+			result: []Item{testItem{1}, testItem{2}, testItem{3}},
+		},
+		{
+			name:   "Nil",
+			arr: nil,
+			result: []Item{},
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.name, func(t *testing.T) {
+			arr := Create(tC.arr)
+			result := arr.GetData()
+			assert.Equal(t, tC.result, result)
+		})
+	}
+}
+
+func TestGetIndex(t *testing.T) {
+	testCases := []struct {
+		name          string
+		item          Item
 		expectedIndex int
 	}{
 		{
-			name:   "0",
-			item:  testItem{1},
+			name:          "0",
+			item:          testItem{1},
 			expectedIndex: 0,
 		},
 		{
-			name:   "1",
-			item:  testItem{2},
+			name:          "1",
+			item:          testItem{2},
 			expectedIndex: 1,
 		},
 		{
-			name:   "-1",
-			item:  testItem{4},
+			name:          "-1",
+			item:          testItem{4},
 			expectedIndex: -1,
 		},
 	}
@@ -275,4 +301,3 @@ func TestSet(t *testing.T) {
 		})
 	}
 }
-

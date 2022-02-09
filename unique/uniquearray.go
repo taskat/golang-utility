@@ -34,6 +34,13 @@ func (u UniqueArray) Get(index int) Item {
 	return u.data[index]
 }
 
+//Returns a copy of the contained array
+func (u UniqueArray) GetData() []Item {
+	dataCopy := make([]Item, len(u.data))
+	copy(dataCopy, u.data)
+	return dataCopy
+}
+
 //Returns the index of item. If the item is not contained, it returns -1
 func (u UniqueArray) GetIndex(item Item) int {
 	for i, elem := range u.data {
