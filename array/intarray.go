@@ -1,16 +1,18 @@
-package intmath
+package array
 
-type UnaryPredicate func(n int) bool
+import "github.com/taskat/golang-utility/intmath"
 
-type UnaryModifier func(n int) int
+type UnaryPredicateInt func(n int) bool
+
+type UnaryModifierInt func(n int) int
 
 //Appends n to arr and returns it
-func Append(arr []int, n int) []int {
+func AppendInt(arr []int, n int) []int {
 	return append(arr, n)
 }
 
 //Return true if arr contains n
-func Contains(arr []int, n int) bool {
+func ContainsInt(arr []int, n int) bool {
 	for _, value := range arr {
 		if value == n {
 			return true
@@ -19,8 +21,8 @@ func Contains(arr []int, n int) bool {
 	return false
 }
 
-//Returns how many elemnts satisfy the predicate
-func Count(arr []int, pred UnaryPredicate) int {
+//Returns how many elements satisfy the predicate
+func CountInt(arr []int, pred UnaryPredicateInt) int {
 	count := 0
 	for _, value := range arr {
 		if pred(value) {
@@ -31,7 +33,7 @@ func Count(arr []int, pred UnaryPredicate) int {
 }
 
 //Returns the array of elements, that satisfies the predicate
-func Filter(arr []int, pred UnaryPredicate) []int {
+func FilterInt(arr []int, pred UnaryPredicateInt) []int {
 	result := make([]int, 0)
 	for _, value := range arr {
 		if pred(value) {
@@ -42,12 +44,12 @@ func Filter(arr []int, pred UnaryPredicate) []int {
 }
 
 //Returns the length of arr
-func Len(arr []int) int {
+func LenInt(arr []int) int {
 	return len(arr)
 }
 
-//Map calls f for every number int arr
-func Map(arr []int, f UnaryModifier) []int {
+//MapInt calls f for every number in arr
+func MapInt(arr []int, f UnaryModifierInt) []int {
 	result := make([]int, len(arr))
 	for i, value := range arr {
 		result[i] = f(value)
@@ -83,6 +85,30 @@ func Min(arr []int) int {
 	return min
 }
 
+//Returns all the possible permutations of arr
+func PermutateInt(arr []int) [][]int {
+	permutations := make([][]int, 0, intmath.Factorial(len(arr)))
+	var helper func([]int, int)
+	helper = func(arr []int, n int) {
+		if n == 1 {
+			tmp := make([]int, len(arr))
+			copy(tmp, arr)
+			permutations = append(permutations, tmp)
+		} else {
+			for i := 0; i < n; i++ {
+				helper(arr, n-1)
+				if n%2 == 1 {
+					arr[i], arr[n-1] = arr[n-1], arr[i]
+				} else {
+					arr[0], arr[n-1] = arr[n-1], arr[0]
+				}
+			}
+		}
+	}
+	helper(arr, len(arr))
+	return permutations
+}
+
 //Returns the product of all values in arr
 func Product(arr []int) int {
 	if len(arr) == 0 {
@@ -96,7 +122,7 @@ func Product(arr []int) int {
 }
 
 //Removes all instances of n from arr
-func RemoveAll(arr []int, n int) []int {
+func RemoveAllInt(arr []int, n int) []int {
 	newArr := make([]int, len(arr))
 	copy(newArr, arr)
 	arr = newArr
@@ -109,7 +135,7 @@ func RemoveAll(arr []int, n int) []int {
 }
 
 //Removes the first instance of n from arr
-func RemoveFirst(arr []int, n int) []int {
+func RemoveFirstInt(arr []int, n int) []int {
 	newArr := make([]int, len(arr))
 	copy(newArr, arr)
 	arr = newArr

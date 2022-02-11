@@ -1,4 +1,4 @@
-package intmath
+package array
 
 import (
 	"testing"
@@ -9,21 +9,21 @@ import (
 func TestAppend(t *testing.T) {
 	testCases := []struct {
 		name        string
-		inputArr    []int
-		inputN      int
-		expectedArr []int
+		inputArr    []interface{}
+		inputN      interface{}
+		expectedArr []interface{}
 	}{
 		{
 			name:        "Simple",
-			inputArr:    []int{1, 2, 3},
+			inputArr:    []interface{}{1, 2, 3},
 			inputN:      4,
-			expectedArr: []int{1, 2, 3, 4},
+			expectedArr: []interface{}{1, 2, 3, 4},
 		},
 		{
 			name:        "ArrIsNil",
 			inputArr:    nil,
 			inputN:      1,
-			expectedArr: []int{1},
+			expectedArr: []interface{}{1},
 		},
 	}
 	for _, tC := range testCases {
@@ -37,19 +37,19 @@ func TestAppend(t *testing.T) {
 func TestContains(t *testing.T) {
 	testCases := []struct {
 		name     string
-		inputArr []int
-		inputN   int
+		inputArr []interface{}
+		inputN   interface{}
 		expected bool
 	}{
 		{
 			name:     "Contains",
-			inputArr: []int{1, 2, 3},
+			inputArr: []interface{}{1, 2, 3},
 			inputN:   1,
 			expected: true,
 		},
 		{
 			name:     "NotContains",
-			inputArr: []int{1, 2, 3},
+			inputArr: []interface{}{1, 2, 3},
 			inputN:   4,
 			expected: false,
 		},
@@ -71,26 +71,26 @@ func TestContains(t *testing.T) {
 func TestCount(t *testing.T) {
 	testCases := []struct {
 		name      string
-		inputArr  []int
+		inputArr  []interface{}
 		inputPred UnaryPredicate
-		expected  int
+		expected  interface{}
 	}{
 		{
 			name:      "Even",
-			inputArr:  []int{1, 2, 3},
-			inputPred: Even,
+			inputArr:  []interface{}{1, 2, 3},
+			inputPred: func(i interface{}) bool { return i.(int)%2 == 0 },
 			expected:  1,
 		},
 		{
 			name:      "Odd",
-			inputArr:  []int{1, 2, 3},
-			inputPred: Odd,
+			inputArr:  []interface{}{1, 2, 3},
+			inputPred: func(i interface{}) bool { return i.(int)%2 == 1 },
 			expected:  2,
 		},
 		{
 			name:      "ArrIsNil",
 			inputArr:  nil,
-			inputPred: Even,
+			inputPred: func(i interface{}) bool { return i.(int)%2 == 0 },
 			expected:  0,
 		},
 	}
@@ -105,27 +105,27 @@ func TestCount(t *testing.T) {
 func TestFilter(t *testing.T) {
 	testCases := []struct {
 		name      string
-		inputArr  []int
+		inputArr  []interface{}
 		inputPred UnaryPredicate
-		expected  []int
+		expected  []interface{}
 	}{
 		{
 			name:      "Even",
-			inputArr:  []int{1, 2, 3},
-			inputPred: Even,
-			expected:  []int{2},
+			inputArr:  []interface{}{1, 2, 3},
+			inputPred: func(i interface{}) bool { return i.(int)%2 == 0 },
+			expected:  []interface{}{2},
 		},
 		{
 			name:      "Odd",
-			inputArr:  []int{1, 2, 3},
-			inputPred: Odd,
-			expected:  []int{1, 3},
+			inputArr:  []interface{}{1, 2, 3},
+			inputPred: func(i interface{}) bool { return i.(int)%2 == 1 },
+			expected:  []interface{}{1, 3},
 		},
 		{
 			name:      "ArrIsNil",
 			inputArr:  nil,
-			inputPred: Even,
-			expected:  []int{},
+			inputPred: func(i interface{}) bool { return i.(int)%2 == 0 },
+			expected:  []interface{}{},
 		},
 	}
 	for _, tC := range testCases {
@@ -139,12 +139,12 @@ func TestFilter(t *testing.T) {
 func TestLen(t *testing.T) {
 	testCases := []struct {
 		name        string
-		inputArr    []int
+		inputArr    []interface{}
 		expectedLen int
 	}{
 		{
 			name:        "Simple",
-			inputArr:    []int{1, 2, 3},
+			inputArr:    []interface{}{1, 2, 3},
 			expectedLen: 3,
 		},
 		{
@@ -164,21 +164,21 @@ func TestLen(t *testing.T) {
 func TestMap(t *testing.T) {
 	testCases := []struct {
 		name     string
-		inputArr []int
+		inputArr []interface{}
 		inputF   UnaryModifier
-		expected []int
+		expected []interface{}
 	}{
 		{
-			name:      "Square",
-			inputArr:  []int{1, 2, 3},
-			inputF: Square,
-			expected:  []int{1, 4, 9},
+			name:     "Square",
+			inputArr: []interface{}{1, 2, 3},
+			inputF:   func(i interface{}) interface{} { return i.(int) * i.(int) },
+			expected: []interface{}{1, 4, 9},
 		},
 		{
-			name:      "ArrIsNil",
-			inputArr:  nil,
-			inputF: Square,
-			expected:  []int{},
+			name:     "ArrIsNil",
+			inputArr: nil,
+			inputF:   func(i interface{}) interface{} { return i.(int) * i.(int) },
+			expected: []interface{}{},
 		},
 	}
 	for _, tC := range testCases {
@@ -189,92 +189,27 @@ func TestMap(t *testing.T) {
 	}
 }
 
-func TestMax(t *testing.T) {
-	testCases := []struct {
-		name        string
-		inputArr    []int
-		expectedMax int
-	}{
-		{
-			name:        "Simple",
-			inputArr:    []int{1, 2, 3},
-			expectedMax: 3,
-		},
-		{
-			name:        "ArrIsNil",
-			inputArr:    nil,
-			expectedMax: 0,
-		},
-		{
-			name:        "ArrIsEmpty",
-			inputArr:    []int{},
-			expectedMax: 0,
-		},
-	}
-	for _, tC := range testCases {
-		t.Run(tC.name, func(t *testing.T) {
-			length := Max(tC.inputArr)
-			assert.Equal(t, tC.expectedMax, length)
-		})
-	}
-}
-
-func TestMin(t *testing.T) {
-	testCases := []struct {
-		name        string
-		inputArr    []int
-		expectedMin int
-	}{
-		{
-			name:        "Simple",
-			inputArr:    []int{1, 2, 3},
-			expectedMin: 1,
-		},
-		{
-			name:        "ArrIsNil",
-			inputArr:    nil,
-			expectedMin: 0,
-		},
-		{
-			name:        "ArrIsEmpty",
-			inputArr:    []int{},
-			expectedMin: 0,
-		},
-	}
-	for _, tC := range testCases {
-		t.Run(tC.name, func(t *testing.T) {
-			length := Min(tC.inputArr)
-			assert.Equal(t, tC.expectedMin, length)
-		})
-	}
-}
-
-func TestProduct(t *testing.T) {
+func TestPermutate(t *testing.T) {
 	testCases := []struct {
 		name     string
-		inputArr []int
-		expected int
+		inputArr []interface{}
+		expected [][]interface{}
 	}{
 		{
 			name:     "Simple",
-			inputArr: []int{1, 2, 3},
-			expected: 6,
+			inputArr: []interface{}{1, 2, 3},
+			expected: [][]interface{}{{1, 2, 3}, {2, 1, 3}, {3, 2, 1}, {2, 3, 1}, {3, 1, 2}, {1, 3, 2}},
 		},
 		{
 			name:     "ArrIsNil",
 			inputArr: nil,
-			expected: 0,
-		},
-		{
-			name:     "ArrIsEmpty",
-			inputArr: []int{},
-			expected: 0,
+			expected: [][]interface{}{},
 		},
 	}
 	for _, tC := range testCases {
 		t.Run(tC.name, func(t *testing.T) {
-			product := Product(tC.inputArr)
-			assert.Equal(t, tC.expected, product)
+			result := Permutate(tC.inputArr)
+			assert.Equal(t, tC.expected, result)
 		})
 	}
 }
@@ -282,24 +217,24 @@ func TestProduct(t *testing.T) {
 func TestRemoveAll(t *testing.T) {
 	testCases := []struct {
 		name        string
-		inputArr    []int
-		originalArr []int
-		inputN      int
-		expectedArr []int
+		inputArr    []interface{}
+		originalArr []interface{}
+		inputN      interface{}
+		expectedArr []interface{}
 	}{
 		{
 			name:        "Simple",
-			inputArr:    []int{1, 2, 3, 2},
-			originalArr: []int{1, 2, 3, 2},
+			inputArr:    []interface{}{1, 2, 3, 2},
+			originalArr: []interface{}{1, 2, 3, 2},
 			inputN:      2,
-			expectedArr: []int{1, 3},
+			expectedArr: []interface{}{1, 3},
 		},
 		{
 			name:        "ArrIsNil",
 			inputArr:    nil,
 			originalArr: nil,
 			inputN:      1,
-			expectedArr: []int{},
+			expectedArr: []interface{}{},
 		},
 	}
 	for _, tC := range testCases {
@@ -314,24 +249,24 @@ func TestRemoveAll(t *testing.T) {
 func TestRemoveFirst(t *testing.T) {
 	testCases := []struct {
 		name        string
-		inputArr    []int
-		originalarr []int
-		inputN      int
-		expectedArr []int
+		inputArr    []interface{}
+		originalarr []interface{}
+		inputN      interface{}
+		expectedArr []interface{}
 	}{
 		{
 			name:        "Simple",
-			inputArr:    []int{1, 2, 3, 2},
-			originalarr: []int{1, 2, 3, 2},
+			inputArr:    []interface{}{1, 2, 3, 2},
+			originalarr: []interface{}{1, 2, 3, 2},
 			inputN:      2,
-			expectedArr: []int{1, 3, 2},
+			expectedArr: []interface{}{1, 3, 2},
 		},
 		{
 			name:        "ArrIsNil",
 			inputArr:    nil,
 			originalarr: nil,
 			inputN:      1,
-			expectedArr: []int{},
+			expectedArr: []interface{}{},
 		},
 	}
 	for _, tC := range testCases {
@@ -339,31 +274,6 @@ func TestRemoveFirst(t *testing.T) {
 			result := RemoveFirst(tC.inputArr, tC.inputN)
 			assert.Equal(t, tC.expectedArr, result)
 			assert.Equal(t, tC.originalarr, tC.inputArr)
-		})
-	}
-}
-
-func TestSum(t *testing.T) {
-	testCases := []struct {
-		name     string
-		inputArr []int
-		expected int
-	}{
-		{
-			name:     "Simple",
-			inputArr: []int{1, 2, 3},
-			expected: 6,
-		},
-		{
-			name:     "ArrIsNil",
-			inputArr: nil,
-			expected: 0,
-		},
-	}
-	for _, tC := range testCases {
-		t.Run(tC.name, func(t *testing.T) {
-			sum := Sum(tC.inputArr)
-			assert.Equal(t, tC.expected, sum)
 		})
 	}
 }
