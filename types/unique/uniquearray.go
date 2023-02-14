@@ -1,66 +1,61 @@
 package unique
 
-//This type is contained by UniqueArray
+// This type is contained by UniqueArray
 type Item interface {
 	Equals(other Item) bool
 }
 
-//Array type, it guarantees that the contained values are unique
-type UniqueArray struct {
-	data []Item
+// Array type, it guarantees that the contained values are unique
+type UniqueArray[T comparable] struct {
+	data []T
 }
 
-//Creates a new UniiqueArray object from items
-func Create(items []Item) UniqueArray {
-	u := UniqueArray{data: make([]Item, 0)}
+// New a new UniiqueArray object from items
+func New[T comparable] (items []T) UniqueArray[T] {
+	u := UniqueArray[T]{data: make([]T, 0)}
 	for _, item := range items {
-		u.Push(item)
+		u.Insert(item)
 	}
 	return u
 }
 
-//Returns true if the array contains the element
-func (u UniqueArray) Contains(element Item) bool {
+// Contains returns true if the array contains the element
+func (u UniqueArray[T]) Contains(element T) bool {
 	for _, value := range u.data {
-		if value.Equals(element) {
+		if value == element {
 			return true
 		}
 	}
 	return false
 }
 
-//Returns the i. element of arr
-func (u UniqueArray) Get(index int) Item {
+// Get returns the i. element of arr
+func (u UniqueArray[T]) Get(index int) T {
 	return u.data[index]
 }
 
-//Returns a copy of the contained array
-func (u UniqueArray) GetData() []Item {
-	dataCopy := make([]Item, len(u.data))
+// GetData returns a copy of the contained array
+func (u UniqueArray[T]) GetData() []T {
+	dataCopy := make([]T, len(u.data))
 	copy(dataCopy, u.data)
 	return dataCopy
 }
 
-//Returns the index of item. If the item is not contained, it returns -1
-func (u UniqueArray) GetIndex(item Item) int {
+// GetIndex returns the index of item. If the item is not contained, it returns -1
+func (u UniqueArray[T]) GetIndex(item T) int {
 	for i, elem := range u.data {
-		if elem.Equals(item) {
+		if elem == item {
 			return i
 		}
 	}
 	return -1
 }
 
-//Returns the length of the array
-func (u UniqueArray) Len() int {
-	return len(u.data)
-}
-
-//Inserts the element into the UniqeArray if it is unique. It returns true if
-//the element is inserted
-func (u *UniqueArray) Push(element Item) bool {
+// Insert inserts the element into the UniqeArray if it is unique. It returns true if
+// the element is inserted
+func (u *UniqueArray[T]) Insert(element T) bool {
 	for _, value := range u.data {
-		if value.Equals(element) {
+		if value == element {
 			return false
 		}
 	}
@@ -68,11 +63,16 @@ func (u *UniqueArray) Push(element Item) bool {
 	return true
 }
 
-//Removes the element if it is contained. It returns true
-//if the element is removed
-func (u *UniqueArray) Remove(element Item) bool {
+// Len returns the length of the array
+func (u UniqueArray[T]) Len() int {
+	return len(u.data)
+}
+
+// Remove removes the element if it is contained. It returns true
+// if the element is removed
+func (u *UniqueArray[T]) Remove(element T) bool {
 	for i, value := range u.data {
-		if value.Equals(element) {
+		if value == element {
 			u.data = append(u.data[:i], u.data[i+1:]...)
 			return true
 		}
@@ -80,14 +80,14 @@ func (u *UniqueArray) Remove(element Item) bool {
 	return false
 }
 
-//Sets the i. element to element. It returns false if the set failed,
-//because the new value would violate the uniqueness
-func (u *UniqueArray) Set(element Item, index int) bool {
+// Set sets the i. element to element. It returns false if the set failed,
+// because the new value would violate the uniqueness
+func (u *UniqueArray[T]) Set(element T, index int) bool {
 	for i, value := range u.data {
 		if i == index {
 			continue
 		}
-		if value.Equals(element) {
+		if value == element {
 			return false
 		}
 	}
