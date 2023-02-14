@@ -2,17 +2,19 @@ package array
 
 import "github.com/taskat/golang-utility/intmath"
 
-type UnaryPredicate func(i interface{}) bool
+type UnaryPredicate[T any] func(T) bool
 
-type UnaryModifier func(i interface{}) interface{}
+type UnaryModifier[T, U any] func(T) U
 
-//Appends n to arr and returns it
-func Append(arr []interface{}, n interface{}) []interface{} {
-	return append(arr, n)
+// Appends elem to arr and returns it
+// It is a wrapper around the append function
+func Append[T any] (arr []T, elem T) []T {
+	return append(arr, elem)
 }
 
-//Return true if arr contains n
-func Contains(arr []interface{}, n interface{}) bool {
+// Return true if arr contains elem
+// A nil array does not contain any element, so it will return false
+func Contains[T comparable] (arr []T, n T) bool {
 	for _, value := range arr {
 		if value == n {
 			return true
@@ -21,8 +23,9 @@ func Contains(arr []interface{}, n interface{}) bool {
 	return false
 }
 
-//Returns how many elements satisfy the predicate
-func Count(arr []interface{}, pred UnaryPredicate) int {
+// Returns how many elements satisfy the predicate
+// A nil array does not contain any element, so it will return 0
+func Count[T any] (arr []T, pred UnaryPredicate[T]) int {
 	count := 0
 	for _, value := range arr {
 		if pred(value) {
@@ -32,9 +35,10 @@ func Count(arr []interface{}, pred UnaryPredicate) int {
 	return count
 }
 
-//Returns the array of elements, that satisfies the predicate
-func Filter(arr []interface{}, pred UnaryPredicate) []interface{} {
-	result := make([]interface{}, 0)
+// Returns the array of elements that satisfies the predicate
+// A nil array does not contain any element, so it will return an empty array
+func Filter[T any] (arr []T, pred UnaryPredicate[T]) []T {
+	result := make([]T, 0)
 	for _, value := range arr {
 		if pred(value) {
 			result = append(result, value)
@@ -43,36 +47,39 @@ func Filter(arr []interface{}, pred UnaryPredicate) []interface{} {
 	return result
 }
 
-//Returns the length of arr
-func Len(arr []interface{}) int {
+// Returns the length of arr
+// A nil array has length 0
+func Len[T any] (arr []T) int {
 	return len(arr)
 }
 
-//Map calls f for every element in arr
-func Map(arr []interface{}, f UnaryModifier) []interface{} {
-	result := make([]interface{}, len(arr))
+// Map calls f for every element in arr
+// A nil array does not contain any element, so it will return an empty array of the new type
+func Map[T, U any] (arr []T, f UnaryModifier[T, U]) []U {
+	result := make([]U, len(arr))
 	for i, value := range arr {
 		result[i] = f(value)
 	}
 	return result
 }
 
-//Returns all the possible permutations of arr
-func Permutate(arr []interface{}) [][]interface{} {
-	permutations := make([][]interface{}, 0, intmath.Factorial(len(arr)))
-	var helper func([]interface{}, int)
-	helper = func(arr []interface{}, n int){
-        if n == 1 {
-            tmp := make([]interface{}, len(arr))
+// Returns all the possible permutations of arr
+// A nil array does not contain any element, so it will return an empty array
+func Permutate[T any] (arr []T) [][]T {
+	permutations := make([][]T, 0, intmath.Factorial(len(arr)))
+	var helper func([]T, int)
+	helper = func(arr []T, length int){
+        if length == 1 {
+            tmp := make([]T, len(arr))
             copy(tmp, arr)
             permutations = append(permutations, tmp)
         } else {
-            for i := 0; i < n; i++{
-                helper(arr, n - 1)
-                if n % 2 == 1 {
-					arr[i], arr[n - 1] = arr[n - 1], arr[i]
+            for i := 0; i < length; i++{
+                helper(arr, length - 1)
+                if length % 2 == 1 {
+					arr[i], arr[length - 1] = arr[length - 1], arr[i]
                 } else {
-					arr[0], arr[n - 1] = arr[n - 1], arr[0]
+					arr[0], arr[length - 1] = arr[length - 1], arr[0]
                 }
             }
         }
@@ -81,24 +88,28 @@ func Permutate(arr []interface{}) [][]interface{} {
     return permutations
 }
 
-//Removes all instances of n from arr
-func RemoveAll(arr []interface{}, n interface{}) []interface{} {
-	newArr := make([]interface{}, len(arr))
-	copy(newArr, arr)
-	arr = newArr
+// Removes all instances of elem from arr
+// It modifies the original array
+// A nil array does not contain any element, but it will return an empty array
+func RemoveAll[T comparable] (arr []T, elem T) []T {
+	if arr == nil {
+		return make([]T, 0)
+	}
 	for i := 0; i < len(arr); i++ {
-		if arr[i] == n {
+		if arr[i] == elem {
 			arr = append(arr[:i], arr[i+1:]...)
 		}
 	}
 	return arr
 }
 
-//Removes the first instance of n from arr
-func RemoveFirst(arr []interface{}, n interface{}) []interface{} {
-	newArr := make([]interface{}, len(arr))
-	copy(newArr, arr)
-	arr = newArr
+// Removes the first instance of elem from arr
+// It modifies the original array
+// A nil array does not contain any element, but it will return an empty array
+func RemoveFirst[T comparable] (arr []T, n T) []T {
+	if arr == nil {
+		return make([]T, 0)
+	}
 	for i := 0; i < len(arr); i++ {
 		if arr[i] == n {
 			return append(arr[:i], arr[i+1:]...)
