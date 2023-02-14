@@ -9,16 +9,16 @@ import (
 func TestCreate(t *testing.T) {
 	testCases := []struct {
 		name          string
-		expectedStack Stack
+		expectedStack Stack[int]
 	}{
 		{
 			name:          "Simple",
-			expectedStack: Stack{data: []interface{}{}},
+			expectedStack: Stack[int]{data: []int{}},
 		},
 	}
 	for _, tC := range testCases {
 		t.Run(tC.name, func(t *testing.T) {
-			s := Create()
+			s := New[int]()
 			assert.Equal(t, tC.expectedStack, s)
 		})
 	}
@@ -27,12 +27,12 @@ func TestCreate(t *testing.T) {
 func TestLen(t *testing.T) {
 	testCases := []struct {
 		name           string
-		stack          Stack
+		stack          Stack[int]
 		expectedLength int
 	}{
 		{
-			name:          "Simple",
-			stack: Stack{data: []interface{}{1, 2, 3}},
+			name:           "Simple",
+			stack:          Stack[int]{data: []int{1, 2, 3}},
 			expectedLength: 3,
 		},
 	}
@@ -47,15 +47,15 @@ func TestLen(t *testing.T) {
 func TestPop(t *testing.T) {
 	testCases := []struct {
 		name           string
-		stack          Stack
-		expectedResult interface{}
-		expectedStack  Stack
+		stack          Stack[int]
+		expectedResult int
+		expectedStack  Stack[int]
 	}{
 		{
 			name:           "Simple",
-			stack:          Stack{data: []interface{}{1, 2, 3}},
+			stack:          Stack[int]{data: []int{1, 2, 3}},
 			expectedResult: 3,
-			expectedStack:  Stack{data: []interface{}{1, 2}},
+			expectedStack:  Stack[int]{data: []int{1, 2}},
 		},
 	}
 	for _, tC := range testCases {
@@ -70,15 +70,15 @@ func TestPop(t *testing.T) {
 func TestPush(t *testing.T) {
 	testCases := []struct {
 		name          string
-		stack         Stack
-		item          interface{}
-		expectedStack Stack
+		stack         Stack[int]
+		item          int
+		expectedStack Stack[int]
 	}{
 		{
 			name:          "Simple",
-			stack:         Stack{data: []interface{}{1, 2, 3}},
+			stack:         Stack[int]{data: []int{1, 2, 3}},
 			item:          4,
-			expectedStack: Stack{data: []interface{}{1, 2, 3, 4}},
+			expectedStack: Stack[int]{data: []int{1, 2, 3, 4}},
 		},
 	}
 	for _, tC := range testCases {
@@ -92,15 +92,15 @@ func TestPush(t *testing.T) {
 func TestTop(t *testing.T) {
 	testCases := []struct {
 		name           string
-		stack          Stack
-		expectedResult interface{}
-		expectedStack  Stack
+		stack          Stack[int]
+		expectedResult int
+		expectedStack  Stack[int]
 	}{
 		{
 			name:           "Simple",
-			stack:          Stack{data: []interface{}{1, 2, 3}},
+			stack:          Stack[int]{data: []int{1, 2, 3}},
 			expectedResult: 3,
-			expectedStack:  Stack{data: []interface{}{1, 2, 3}},
+			expectedStack:  Stack[int]{data: []int{1, 2, 3}},
 		},
 	}
 	for _, tC := range testCases {
