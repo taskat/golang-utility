@@ -53,6 +53,20 @@ func Len[T any] (arr []T) int {
 	return len(arr)
 }
 
+// Merge merges two arrays
+// It modifies the original array
+// A nil array does not contain any element, so it will return the other array
+// If both arrays are nil, it will return an empty array
+func Merge[T any] (arr, other []T) []T {
+	if arr == nil {
+		if other == nil {
+			return make([]T, 0)
+		}
+		return other
+	}
+	return append(arr, other...)
+}
+
 // Map calls f for every element in arr
 // A nil array does not contain any element, so it will return an empty array of the new type
 func Map[T, U any] (arr []T, f UnaryModifier[T, U]) []U {
@@ -114,6 +128,19 @@ func RemoveFirst[T comparable] (arr []T, n T) []T {
 		if arr[i] == n {
 			return append(arr[:i], arr[i+1:]...)
 		}
+	}
+	return arr
+}
+
+// Reverse reverses the order of the elements in arr
+// It modifies the original array
+// A nil array does not contain any element, but it will return an empty array
+func Reverse[T any] (arr []T) []T {
+	if arr == nil {
+		return make([]T, 0)
+	}
+	for i := 0; i < len(arr)/2; i++ {
+		arr[i], arr[len(arr)-i-1] = arr[len(arr)-i-1], arr[i]
 	}
 	return arr
 }

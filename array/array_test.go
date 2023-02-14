@@ -161,6 +161,46 @@ func TestLen(t *testing.T) {
 	}
 }
 
+func TestMerge(t *testing.T) {
+	testCases := []struct {
+		name        string
+		inputArr1   []int
+		inputArr2   []int
+		expectedArr []int
+	}{
+		{
+			name:        "Simple",
+			inputArr1:   []int{1, 2, 3},
+			inputArr2:   []int{4, 5, 6},
+			expectedArr: []int{1, 2, 3, 4, 5, 6},
+		},
+		{
+			name:        "Arr1IsNil",
+			inputArr1:   nil,
+			inputArr2:   []int{4, 5, 6},
+			expectedArr: []int{4, 5, 6},
+		},
+		{
+			name:        "Arr2IsNil",
+			inputArr1:   []int{1, 2, 3},
+			inputArr2:   nil,
+			expectedArr: []int{1, 2, 3},
+		},
+		{
+			name:        "BothArrIsNil",
+			inputArr1:   nil,
+			inputArr2:   nil,
+			expectedArr: []int{},
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.name, func(t *testing.T) {
+			result := Merge(tC.inputArr1, tC.inputArr2)
+			assert.Equal(t, tC.expectedArr, result)
+		})
+	}
+}
+
 func TestMap(t *testing.T) {
 	testCases := []struct {
 		name     string
@@ -271,6 +311,36 @@ func TestRemoveFirst(t *testing.T) {
 	for _, tC := range testCases {
 		t.Run(tC.name, func(t *testing.T) {
 			result := RemoveFirst(tC.inputArr, tC.inputN)
+			assert.Equal(t, tC.expectedArr, result)
+		})
+	}
+}
+
+func TestReverse(t *testing.T) {
+	testCases := []struct {
+		name        string
+		inputArr    []int
+		expectedArr []int
+	}{
+		{
+			name:        "Odd",
+			inputArr:    []int{1, 2, 3},
+			expectedArr: []int{3, 2, 1},
+		},
+		{
+			name:        "Even",
+			inputArr:    []int{1, 2, 3, 4},
+			expectedArr: []int{4, 3, 2, 1},
+		},
+		{
+			name:        "ArrIsNil",
+			inputArr:    nil,
+			expectedArr: []int{},
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.name, func(t *testing.T) {
+			result := Reverse(tC.inputArr)
 			assert.Equal(t, tC.expectedArr, result)
 		})
 	}
